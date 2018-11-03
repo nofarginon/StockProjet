@@ -31,15 +31,15 @@ export class StockServiceService {
     }
 
     getDataFromFiveResources(data) {
-      let url1 = this.http.get(this.api_urlDaily + encodeURIComponent(data[0]) + '&interval=5min&apikey=' + this.apiKey).map((res) => res.json())
+      let url1 = this.http.get(this.api_urlDaily + encodeURIComponent(data[0]) + '&interval=5min&apikey=' + this.apiKeyS).map((res) => res.json())
       .catch((error : any) => Observable.throw('Server error'));
-      let url2 = this.http.get(this.api_urlDaily + encodeURIComponent(data[1]) + '&interval=5min&apikey=' + this.apiKey).map((res) => res.json())
+      let url2 = this.http.get(this.api_urlDaily + encodeURIComponent(data[1]) + '&interval=5min&apikey=' + this.apiKeyS).map((res) => res.json())
       .catch((error : any) => Observable.throw('Server error'));
-      let url3 = this.http.get(this.api_urlDaily + encodeURIComponent(data[2]) + '&interval=5min&apikey=' + this.apiKey).map((res) => res.json())
+      let url3 = this.http.get(this.api_urlDaily + encodeURIComponent(data[2]) + '&interval=5min&apikey=' + this.apiKeyS).map((res) => res.json())
       .catch((error : any) => Observable.throw('Server error'));
-      let url4 = this.http.get(this.api_urlDaily + encodeURIComponent(data[3]) + '&interval=5min&apikey=' + this.apiKey).map((res) => res.json())
+      let url4 = this.http.get(this.api_urlDaily + encodeURIComponent(data[3]) + '&interval=5min&apikey=' + this.apiKeyS).map((res) => res.json())
       .catch((error : any) => Observable.throw('Server error'));
-      let url5 = this.http.get(this.api_urlDaily + encodeURIComponent(data[4]) + '&interval=5min&apikey=' + this.apiKey).map((res) => res.json())
+      let url5 = this.http.get(this.api_urlDaily + encodeURIComponent(data[4]) + '&interval=5min&apikey=' + this.apiKeyS).map((res) => res.json())
       .catch((error : any) => Observable.throw('Server error'));
 
       return Observable.forkJoin([url1, url2 , url3 , url4 , url5]);
