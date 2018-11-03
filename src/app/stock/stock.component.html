@@ -1,0 +1,49 @@
+
+<div class="flex-column">
+  <div *ngFor="let stock of stocks" >
+    <div class="loder" *ngIf="loading">
+      <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+        <circle fill="pink" stroke="none" cx="6" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.1"/>
+        </circle>
+        <circle fill="#d37d96" stroke="none" cx="26" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.2"/>
+        </circle>
+        <circle fill="pink" stroke="none" cx="46" cy="50" r="6">
+          <animate
+            attributeName="opacity"
+            dur="1s"
+            values="0;1;0"
+            repeatCount="indefinite"
+            begin="0.3"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="stockData flex-column"  *ngIf="!loading">
+      <div class=stockRow>
+        <div class="stock_name flex">{{stock.name}}</div>
+        <div class="stock_symbol flex">{{stock.symbol}}</div>
+        <div class="stock_close flex">{{stock.close}}</div>
+        <div class="stock_trend flex"><i [ngClass]="{'': stock.trend==0, 'fa-arrow-up': stock.trend==1, 'fa-arrow-down': stock.trend==-1}" class="fas"></i></div>
+      </div>
+      <div id="{{stock.symbol}}">
+        <amCharts *ngIf="stock.symbol=='SPY'" id="optionsSPY" [options]="optionsSPY" [style.width.%]="100" [style.height.px]="500"></amCharts>
+        <amCharts *ngIf="stock.symbol=='DIAX'" id="optionsDIAX" [options]="optionsDIAX" [style.width.%]="100" [style.height.px]="500"></amCharts>
+        <amCharts *ngIf="stock.symbol=='NDAQ'" id="optionsNDAQ" [options]="optionsNDAQ" [style.width.%]="100" [style.height.px]="500"></amCharts>
+        <amCharts *ngIf="stock.symbol=='AMZN'" id="optionsAMZN" [options]="optionsAMZN" [style.width.%]="100" [style.height.px]="500"></amCharts>
+        <amCharts *ngIf="stock.symbol=='GOOG'" id="optionsGOOG" [options]="optionsGOOG" [style.width.%]="100" [style.height.px]="500"></amCharts>
+      </div>
+    </div>
+  </div>
+</div>

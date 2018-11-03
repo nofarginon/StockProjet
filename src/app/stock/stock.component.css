@@ -1,0 +1,39 @@
+.flex-column{
+  display: flex;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+svg {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+}
+
+.flex{
+  display: flex;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+}
+#SPY , #DIAX , #NDAQ , #AMZN , #GOOG {
+  margin:20px 0px;
+}
+.stockData{
+  margin:20px 0px;
+}
+.stockRow{
+  display: flex;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: #d37d96;
+  font-size:25px;
+}
+
+.stock_name{
+  font-weight: 600;
+}
