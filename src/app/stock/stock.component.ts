@@ -42,7 +42,7 @@ export class StockComponent implements OnInit {
   }
   startInterval(){
    Observable
-    .timer(100, 1*60*1000)
+    .timer(100, 5*60*1000)
     .timeInterval()
     .flatMap(() => this.StockServiceService.getDataFromFiveResources(this.symbols))
     .subscribe(responseList => {
