@@ -48,50 +48,26 @@ export class StockComponent implements OnInit {
     .subscribe(responseList => {
       this.dataFromRequestStock=responseList;
       console.log(this.dataFromRequestStock);
-      this.LastRefreshed=this.dataFromRequestStock[0]["Meta Data"]["3. Last Refreshed"];
-      for(let j=0;j<5;j++){
-        let currentStock=this.dataFromRequestStock[j];
-        this.timeArray[j]=this.convertToArray(currentStock);
-        let obj=this.timeArray[j][1];
-        let secondKey=Object.keys(obj)[1];
-        let lastClose=currentStock["Time Series (5min)"][secondKey];
-        let finddata=currentStock["Time Series (5min)"][currentStock["Meta Data"]["3. Last Refreshed"]];
-        this.stocks[j].close =finddata["4. close"];
-        this.stocks[j].open =finddata["1. open"];
-        if(this.stocks[j].close>lastClose["4. close"]){this.stocks[j].trend=1;}
-        else if(this.stocks[j].close<lastClose["4. close"]){this.stocks[j].trend=-1;}
-        else{this.stocks[j].trend=0;}
-        if(!this.isCreated){
-          this.stocksChart[j]=this.createChart(currentStock);
-          switch (this.symbols[j]) {
-            case "SPY":
-                 this.optionsSPY =this.makeOptions(this.stocksChart[0]) ;
-                 break;
-             case "DIAX":
-                 this.optionsDIAX =this.makeOptions(this.stocksChart[1]) ;
-                 break;
-             case "NDAQ":
-                 this.optionsNDAQ =this.makeOptions(this.stocksChart[2]) ;
-                 break;
-             case "AMZN":
-                 this.optionsAMZN =this.makeOptions(this.stocksChart[3]) ;
-                 break;
-            case "GOOG":
-                this.optionsGOOG =this.makeOptions(this.stocksChart[4]) ;
-                break;
-           }
-        }
-        else{
-          let today=new Date().getDay();
-          let hour =this.convertHour(this.LastRefreshed);
-          let hourTemp=hour.split(":");
-          let hourInteger=hourTemp.join("");
-          if((today !== 6 && today !== 0)&&(parseInt(hourInteger) > 160000)){
-            console.log("Loading Update");
-            this.stocksChart[j].shift();
-            this.stocksChart[j]=this.updateChart(currentStock,this.stocksChart[j]);
-            console.log("after update");
-            console.log(this.stocksChart[j]);
+      if(typeof this.dataFromRequestStock[0]["Meta Data"] === 'undefined'){
+        alert("Api Delay, Please Wait 1 Minute While Loading");
+        Observable.timer(60000).subscribe(() => this.startInterval());
+      }
+      else{
+        this.LastRefreshed=this.dataFromRequestStock[0]["Meta Data"]["3. Last Refreshed"];
+        for(let j=0;j<5;j++){
+          let currentStock=this.dataFromRequestStock[j];
+          this.timeArray[j]=this.convertToArray(currentStock);
+          let obj=this.timeArray[j][1];
+          let secondKey=Object.keys(obj)[1];
+          let lastClose=currentStock["Time Series (5min)"][secondKey];
+          let finddata=currentStock["Time Series (5min)"][currentStock["Meta Data"]["3. Last Refreshed"]];
+          this.stocks[j].close =finddata["4. close"];
+          this.stocks[j].open =finddata["1. open"];
+          if(this.stocks[j].close>lastClose["4. close"]){this.stocks[j].trend=1;}
+          else if(this.stocks[j].close<lastClose["4. close"]){this.stocks[j].trend=-1;}
+          else{this.stocks[j].trend=0;}
+          if(!this.isCreated){
+            this.stocksChart[j]=this.createChart(currentStock);
             switch (this.symbols[j]) {
               case "SPY":
                    this.optionsSPY =this.makeOptions(this.stocksChart[0]) ;
@@ -110,10 +86,41 @@ export class StockComponent implements OnInit {
                   break;
              }
           }
-        }
-    }
-    this.isCreated=true;
-    this.loading=false;
+          else{
+            let today=new Date().getDay();
+            let hour =this.convertHour(this.LastRefreshed);
+            let hourTemp=hour.split(":");
+            let hourInteger=hourTemp.join("");
+            if((today !== 6 && today !== 0)&&(parseInt(hourInteger) > 160000)){
+              console.log("Loading Update");
+              this.stocksChart[j].shift();
+              this.stocksChart[j]=this.updateChart(currentStock,this.stocksChart[j]);
+              console.log("after update");
+              console.log(this.stocksChart[j]);
+              switch (this.symbols[j]) {
+                case "SPY":
+                     this.optionsSPY =this.makeOptions(this.stocksChart[0]) ;
+                     break;
+                 case "DIAX":
+                     this.optionsDIAX =this.makeOptions(this.stocksChart[1]) ;
+                     break;
+                 case "NDAQ":
+                     this.optionsNDAQ =this.makeOptions(this.stocksChart[2]) ;
+                     break;
+                 case "AMZN":
+                     this.optionsAMZN =this.makeOptions(this.stocksChart[3]) ;
+                     break;
+                case "GOOG":
+                    this.optionsGOOG =this.makeOptions(this.stocksChart[4]) ;
+                    break;
+               }
+            }
+          }
+      }
+      this.isCreated=true;
+      this.loading=false;
+      }
+
   });
 }
 
